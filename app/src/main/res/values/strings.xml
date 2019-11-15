@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Forecast</string>
+    <string name="default_city">Minneapolis, MN</string>
+    <string name="setting_icon_description">Setting icon</string>
+    <string name="units_text">Units</string>
+    <string name="default_zip_code">55431</string>
+    <string name="zip_code_text">Zip</string>
+    <string name="today_text">Today</string>
+    <string name="tomorrow_text">Tomorrow</string>
+    <string name="temp_value">%1$d %2$s</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Needed for the dropdown menu of units-->
+    <string-array name="unit">
+        <item>Fahrenheit</item>
+        <item>Celsius</item>
+    </string-array>
+</resources>
