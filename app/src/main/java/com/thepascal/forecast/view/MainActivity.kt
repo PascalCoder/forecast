@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity(), ViewContract {
     }
 
     override fun addForecast(dataSet: ForecastList) {
+        homeErrorMessage.visibility = View.GONE
+        homeRecyclerView.visibility = View.VISIBLE
         homeRecyclerView.adapter = CustomAdapter(dataSet)
 
         Log.d(tag, "onCreate: $DEFAULT_ZIP_CODE $DEFAULT_SYSTEM City: ${Presenter.city} Temp: ${Presenter.temp}")
@@ -70,6 +72,9 @@ class MainActivity : AppCompatActivity(), ViewContract {
 
     override fun onError(errorMessage: String) {
         Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
+        homeRecyclerView.visibility = View.GONE
+        homeErrorMessage.visibility = View.VISIBLE
+        homeErrorMessage.text = errorMessage
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,9 +95,9 @@ class MainActivity : AppCompatActivity(), ViewContract {
                 if(zipCode != null && units != null){
                     presenter.getForecasts(zipCode, units)
 
-                    /*if(Presenter.lists.isEmpty()){
-
-                    }*/
+                    if(Presenter.lists[0].isEmpty()){
+                        this.onError("No data found for the provided zipcode")
+                    }
                 }
 
             }

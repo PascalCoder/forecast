@@ -9,7 +9,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.thepascal.forecast.Constants.EXTRA_MESSAGE
+import com.thepascal.forecast.Constants.DEFAULT_SYSTEM
+import com.thepascal.forecast.Constants.METRIC_SYSTEM
 import com.thepascal.forecast.Constants.UNITS_REPLY
 import com.thepascal.forecast.Constants.ZIP_CODE_REPLY
 import com.thepascal.forecast.R
@@ -30,7 +31,8 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         supportActionBar?.hide()
-        val message = intent.getStringExtra(EXTRA_MESSAGE)
+
+        zipCode = detailsZipCode.editText?.text.toString()
 
         val arrayAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.unit, android.R.layout.simple_spinner_item
@@ -41,25 +43,19 @@ class DetailsActivity : AppCompatActivity() {
         detailsSpinner.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 unit = detailsSpinner.selectedItem.toString()
-                if (unit.equals("Celsius")) {
-                    system = "metric"
+                system = if (unit == "Celsius") {
+                     METRIC_SYSTEM
                 } else {
-                    system = "imperial"
+                    DEFAULT_SYSTEM
                 }
-                zipCode = detailsZipCode.editText?.text.toString()
+                //zipCode = detailsZipCode.editText?.text.toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                system = "imperial"
-                zipCode = detailsZipCode.editText?.text.toString()
+                system = DEFAULT_SYSTEM
+                //zipCode = detailsZipCode.editText?.text.toString()
             }
         })
-
-        if (unit == "Celsius") {
-            unit = "metric"
-        } else {
-            unit = "imperial"
-        }
 
         detailsBackArrow.setOnClickListener {
             Toast.makeText(applicationContext, "Unit: $unit \n System: $system \n ZipCode: $zipCode", Toast.LENGTH_LONG).show()
@@ -70,6 +66,11 @@ class DetailsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         //super.onBackPressed()
         Log.d(tag, "onBackPressed: Inside onBackPressed!")
+        zipCode = detailsZipCode.editText?.text.toString()
+
+        if (zipCode.isBlank() || zipCode.length != 5){
+            return
+        }
 
         val replyIntent = Intent()
         replyIntent.putExtra(ZIP_CODE_REPLY, zipCode)

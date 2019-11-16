@@ -116,6 +116,10 @@ class Presenter : PresenterContract {
                             }
                         }
                         Log.d(tag, "onResponse: Lists: ${lists[0].size}")
+
+                        if (lists[0].isEmpty()) {
+                            viewContract.onError("No data found for the provided zipcode")
+                        }
                     }
                 } else {
                     viewContract.addForecast(ForecastList())
