@@ -15,20 +15,18 @@ import java.util.ArrayList
 
 class Presenter : PresenterContract {
 
-    private val TAG = Presenter::class.java.simpleName
+    private val tag = Presenter::class.java.simpleName
 
     private lateinit var api: WeatherApi
-    //private val BASE_URL: String = "http://api.openweathermap.org/"
 
-    companion object Constants {
-        val defaultZipCode = "30071" //"55431"
-        val defaultUnit = "imperial"
-
+    companion object PresenterConstants {
         var city: String = ""
         var condition: String = ""
         var temp: String = ""
 
         var lists: Array<ArrayList<com.thepascal.forecast.models.List>> = Array(5) { arrayListOf<com.thepascal.forecast.models.List>() }
+
+        var forecastList: ForecastList = ForecastList()
     }
 
 
@@ -63,13 +61,15 @@ class Presenter : PresenterContract {
                     days = mutableListOf()
 
                     (response.body())?.let {
+                        forecastList = it
+
                         city = it.city.name
                         temp = "${it.list[0].main.temp}"
                         condition = it.list[0].weather[0].main
 
                         viewContract.addForecast(it)
 
-                        Log.d(TAG, "onResponse: ${it.list.size} temp: $temp")
+                        Log.d(tag, "onResponse: ${it.list.size} temp: $temp")
 
                         day1Date = it.list[0].dateTime
                         daysDate[0] = day1Date.substring(0, day1Date.indexOf(" "))
@@ -87,7 +87,7 @@ class Presenter : PresenterContract {
                             } else {
                                 if (j < daysDate.size) {
                                     daysDate[j] = date
-                                    Log.d(TAG, "onResponse: " + daysDate[j])
+                                    Log.d(tag, "onResponse: " + daysDate[j])
                                     j++
                                 } else {
                                     break
@@ -115,7 +115,7 @@ class Presenter : PresenterContract {
 
                             }
                         }
-                        Log.d(TAG, "onResponse: Lists: ${lists[0].size}")
+                        Log.d(tag, "onResponse: Lists: ${lists[0].size}")
                     }
                 } else {
                     viewContract.addForecast(ForecastList())
@@ -123,7 +123,7 @@ class Presenter : PresenterContract {
             }
 
             override fun onFailure(call: Call<ForecastList>, t: Throwable) {
-                Log.d(TAG, "onFailure: Something went wrong! ${t.message}")
+                Log.d(tag, "onFailure: Something went wrong! ${t.message}")
             }
         })
     }

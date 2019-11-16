@@ -7,23 +7,27 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.thepascal.forecast.Constants.DEFAULT_SYSTEM
+import com.thepascal.forecast.Constants.DEFAULT_ZIP_CODE
+import com.thepascal.forecast.Constants.EXTRA_MESSAGE
+import com.thepascal.forecast.Constants.UNITS_REPLY
+import com.thepascal.forecast.Constants.UPDATE_REQUEST
+import com.thepascal.forecast.Constants.ZIP_CODE_REPLY
 import com.thepascal.forecast.R
+import com.thepascal.forecast.formatTemperature
 import com.thepascal.forecast.models.ForecastList
+import com.thepascal.forecast.models.List
 import com.thepascal.forecast.presenter.CustomAdapter
 import com.thepascal.forecast.presenter.Presenter
 import com.thepascal.forecast.presenter.PresenterContract
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), ViewContract {
 
-    private val TAG = MainActivity::class.java.simpleName
+    private val tag = MainActivity::class.java.simpleName
 
-    companion object Constants {
-        val UPDATE_REQUEST: Int = 1
-        val EXTRA_MESSAGE: String = "com.thepascal.forecast.extra.MESSAGE"
-    }
-
-    lateinit var presenter: PresenterContract
+    private lateinit var presenter: PresenterContract
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,24 +41,24 @@ class MainActivity : AppCompatActivity(), ViewContract {
         presenter = Presenter()
         presenter.bindView(this)
         presenter.initializeRetrofit()
-        presenter.getForecasts(Presenter.defaultZipCode, Presenter.defaultUnit)
+        presenter.getForecasts(DEFAULT_ZIP_CODE, DEFAULT_SYSTEM)
 
         homeCityText.text = Presenter.city
         homeCondition.text = Presenter.condition
 
         homeSettingsImage.setOnClickListener {
-            updateDetails(it)
+            updateDetails()
         }
     }
 
     override fun addForecast(dataSet: ForecastList) {
         homeRecyclerView.adapter = CustomAdapter(dataSet)
 
-        Log.d(TAG, "onCreate: ${Presenter.defaultZipCode} ${Presenter.defaultUnit} City: ${Presenter.city} Temp: ${Presenter.temp}")
+        Log.d(tag, "onCreate: $DEFAULT_ZIP_CODE $DEFAULT_SYSTEM City: ${Presenter.city} Temp: ${Presenter.temp}")
 
         homeCityText.text = Presenter.city
         val temp: Double = (Presenter.temp).toDouble()
-        homeTemp.text = "${Math.round(temp)} °"
+        homeTemp.text = formatTemperature(temp)
         homeCondition.text = Presenter.condition
 
         if ((Presenter.temp).toDouble() < 60) {
@@ -71,30 +75,37 @@ class MainActivity : AppCompatActivity(), ViewContract {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d(TAG, "onActivityResult: " + "Back to main before check!")
+        Log.d(tag, "onActivityResult: " + "Back to main before check!")
         if (requestCode == UPDATE_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Log.d(TAG, "onActivityResult: " + "Back to main!")
+                Log.d(tag, "onActivityResult: " + "Back to main!")
 
-                val zipCode = data?.getStringExtra(DetailsActivity.ZIP_CODE_REPLY)
-                val units = data?.getStringExtra(DetailsActivity.UNITS_REPLY)
+                val zipCode: String? = data?.getStringExtra(ZIP_CODE_REPLY)
+                val units: String? = data?.getStringExtra(UNITS_REPLY)
 
-                Log.d(TAG, "onActivityResult: Details: $zipCode $units")
+                Log.d(tag, "onActivityResult: Details: $zipCode $units")
 
                 presenter.bindView(this)
                 presenter.initializeRetrofit()
-                presenter.getForecasts(zipCode!!, units!!)
+                if(zipCode != null && units != null){
+                    presenter.getForecasts(zipCode, units)
+
+                    /*if(Presenter.lists.isEmpty()){
+
+                    }*/
+                }
+
             }
         }
     }
 
-    private fun updateDetails(view: View){
+    private fun updateDetails(){
 
         val message = "Testing message"
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra(EXTRA_MESSAGE, message)
         startActivityForResult(intent, UPDATE_REQUEST)
 
-        Log.d(TAG, "updateDetails: Details Activity started!")
+        Log.d(tag, "updateDetails: Details Activity started!")
     }
 }

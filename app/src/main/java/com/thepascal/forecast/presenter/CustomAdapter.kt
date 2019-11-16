@@ -23,7 +23,7 @@ class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdap
     private lateinit var context: Context
 
     init {
-        dataSet = ForecastList()
+        dataSet = Presenter.forecastList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -34,7 +34,7 @@ class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdap
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val dateTime = Presenter.lists[position][position].dateTime
+        val dateTime: String = Presenter.lists[position][position].dateTime
 
         /*if (position == 0) {
             holder.tvDay.text = context.getString(R.string.today_text)
@@ -47,50 +47,57 @@ class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdap
 
         Log.d(tag, "onBindViewHolder: " + Presenter.lists[4][0].dateTime + " " + position)
 
-        when (position) {
+        for (i in 0 until Presenter.lists[position].size) {
+            holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+            holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
+            val img = Presenter.lists[position][i].weather[0].icon
+            Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
+        }
+
+        /*when (position) {
             0 -> {
-                for (i in 0 until Presenter.lists[0].size) {
-                    holder.timeTextViews[i].text = formatTime(Presenter.lists[0][i].dateTime)
-                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[0][i].main.temp)
+                for (i in 0 until Presenter.lists[position].size) {
+                    holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
                     val img = Presenter.lists[position][i].weather[0].icon
                     Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
                 }
             }
             1 -> {
-                for (i in 0 until Presenter.lists[1].size) {
-                    holder.timeTextViews[i].text = formatTime(Presenter.lists[1][i].dateTime)
-                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[1][i].main.temp)
+                for (i in 0 until Presenter.lists[position].size) {
+                    holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
                     val img = Presenter.lists[position][i].weather[0].icon
                     Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
                 }
             }
             2 -> {
-                for (i in 0 until Presenter.lists[2].size) {
-                    holder.timeTextViews[i].text = formatTime(Presenter.lists[2][i].dateTime)
-                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[2][i].main.temp)
+                for (i in 0 until Presenter.lists[position].size) {
+                    holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
                     val img = Presenter.lists[position][i].weather[0].icon
                     Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
                 }
             }
             3 -> {
-                for (i in 0 until Presenter.lists[3].size) {
-                    holder.timeTextViews[i].text = formatTime(Presenter.lists[3][i].dateTime)
-                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[3][i].main.temp)
+                for (i in 0 until Presenter.lists[position].size) {
+                    holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
                     val img = Presenter.lists[position][i].weather[0].icon
                     Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
                 }
             }
             4 -> {
-                for (i in 0 until Presenter.lists[0].size) {
-                    holder.timeTextViews[i].text = formatTime(Presenter.lists[4][i].dateTime)
-                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[4][i].main.temp)
+                for (i in 0 until Presenter.lists[position].size) {
+                    holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
+                    holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
                     val img = Presenter.lists[position][i].weather[0].icon
                     Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
                 }
             }
             else -> {
             }
-        }
+        }*/
     }
 
     override fun getItemCount(): Int = 5 //number of days forecast

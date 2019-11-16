@@ -9,17 +9,17 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.thepascal.forecast.Constants.EXTRA_MESSAGE
+import com.thepascal.forecast.Constants.UNITS_REPLY
+import com.thepascal.forecast.Constants.ZIP_CODE_REPLY
 import com.thepascal.forecast.R
 import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity() {
 
-    private val TAG = DetailsActivity::class.java.simpleName
+    private val tag = DetailsActivity::class.java.simpleName
 
     companion object Constants {
-        val ZIP_CODE_REPLY: String = "com.thepascal.forecast.view.zipcode.REPLY"
-        val UNITS_REPLY: String = "com.thepascal.forecast.view.units.REPLY"
-
         var zipCode: String = ""
         var unit: String = ""
         var system: String = ""
@@ -30,7 +30,7 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         supportActionBar?.hide()
-        val message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE)
+        val message = intent.getStringExtra(EXTRA_MESSAGE)
 
         val arrayAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.unit, android.R.layout.simple_spinner_item
@@ -46,12 +46,12 @@ class DetailsActivity : AppCompatActivity() {
                 } else {
                     system = "imperial"
                 }
-                zipCode = detailsZipCode.text.toString()
+                zipCode = detailsZipCode.editText?.text.toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 system = "imperial"
-                zipCode = detailsZipCode.text.toString()
+                zipCode = detailsZipCode.editText?.text.toString()
             }
         })
 
@@ -62,14 +62,14 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         detailsBackArrow.setOnClickListener {
-            Toast.makeText(applicationContext, "Unit: $unit \n System: $system", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "Unit: $unit \n System: $system \n ZipCode: $zipCode", Toast.LENGTH_LONG).show()
             onBackPressed()
         }
     }
 
     override fun onBackPressed() {
         //super.onBackPressed()
-        Log.d(TAG, "onBackPressed: Inside onBackPressed!")
+        Log.d(tag, "onBackPressed: Inside onBackPressed!")
 
         val replyIntent = Intent()
         replyIntent.putExtra(ZIP_CODE_REPLY, zipCode)

@@ -2,6 +2,7 @@
 <resources>
     <!--Needed for the dropdown menu of units-->
     <string-array name="unit">
+        <item>Select Units</item>
         <item>Fahrenheit</item>
         <item>Celsius</item>
     </string-array>
