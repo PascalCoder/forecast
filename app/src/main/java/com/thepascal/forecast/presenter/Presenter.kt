@@ -3,7 +3,8 @@ package com.thepascal.forecast.presenter
 import android.util.Log
 import com.thepascal.forecast.Constants.BASE_URL
 import com.thepascal.forecast.models.Forecast
-import com.thepascal.forecast.models.ForecastList
+import com.thepascal.forecast.models.Forecasts
+import com.thepascal.forecast.models.ForecastsData
 import com.thepascal.forecast.models.WeatherApi
 import com.thepascal.forecast.view.ViewContract
 import retrofit2.Call
@@ -24,9 +25,9 @@ class Presenter : PresenterContract {
         var condition: String = ""
         var temp: String = ""
 
-        var lists: Array<ArrayList<com.thepascal.forecast.models.List>> = Array(5) { arrayListOf<com.thepascal.forecast.models.List>() }
+        var forecasts: Array<ArrayList<Forecasts>> = Array(5) { arrayListOf<Forecasts>() }
 
-        var forecastList: ForecastList = ForecastList()
+        var forecastsData: ForecastsData = ForecastsData()
     }
 
 
@@ -54,14 +55,14 @@ class Presenter : PresenterContract {
 
         initializeArrayLists()
 
-        api.getForecast(zipCode, units).enqueue(object : Callback<ForecastList> {
+        api.getForecast(zipCode, units).enqueue(object : Callback<ForecastsData> {
 
-            override fun onResponse(call: Call<ForecastList>, response: Response<ForecastList>) {
+            override fun onResponse(call: Call<ForecastsData>, response: Response<ForecastsData>) {
                 if (response.body() != null) {
                     days = mutableListOf()
 
                     (response.body())?.let {
-                        forecastList = it
+                        forecastsData = it
 
                         city = it.city.name
                         temp = "${it.list[0].main.temp}"
@@ -103,38 +104,38 @@ class Presenter : PresenterContract {
                             date = date.substring(0, date.indexOf(" "))
 
                             if (daysDate[l] == date) {
-                                lists[l].add(it.list[i])
+                                forecasts[l].add(it.list[i])
                                 continue
                             } else {
                                 l++
                                 if (l < daysDate.size) {
-                                    lists[l].add(it.list[i])
+                                    forecasts[l].add(it.list[i])
                                 } else {
                                     break
                                 }
 
                             }
                         }
-                        Log.d(tag, "onResponse: Lists: ${lists[0].size}")
+                        Log.d(tag, "onResponse: Lists: ${forecasts[0].size}")
 
-                        if (lists[0].isEmpty()) {
+                        if (forecasts[0].isEmpty()) {
                             viewContract.onError("No data found for the provided zipcode")
                         }
                     }
                 } else {
-                    viewContract.addForecast(ForecastList())
+                    viewContract.addForecast(ForecastsData())
                 }
             }
 
-            override fun onFailure(call: Call<ForecastList>, t: Throwable) {
+            override fun onFailure(call: Call<ForecastsData>, t: Throwable) {
                 Log.d(tag, "onFailure: Something went wrong! ${t.message}")
             }
         })
     }
 
     private fun initializeArrayLists() {
-        for (i in 0 until lists.size) {
-            lists[i] = ArrayList(8)
+        for (i in 0 until forecasts.size) {
+            forecasts[i] = ArrayList(8)
         }
     }
 

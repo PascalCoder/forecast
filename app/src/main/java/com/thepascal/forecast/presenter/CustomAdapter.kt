@@ -1,7 +1,6 @@
 package com.thepascal.forecast.presenter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +13,16 @@ import com.thepascal.forecast.Constants.IMAGE_URL
 import com.thepascal.forecast.R
 import com.thepascal.forecast.formatTemperature
 import com.thepascal.forecast.formatTime
-import com.thepascal.forecast.models.ForecastList
+import com.thepascal.forecast.models.ForecastsData
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdapter.CustomViewHolder>() {
+class CustomAdapter(var dataSet: ForecastsData) : RecyclerView.Adapter<CustomAdapter.CustomViewHolder>() {
 
     private val tag = CustomAdapter::class.java.simpleName
     private lateinit var context: Context
 
     init {
-        dataSet = Presenter.forecastList
+        dataSet = Presenter.forecastsData
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -36,8 +35,8 @@ class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdap
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         var dateTime = " "
 
-        if (Presenter.lists[position].isNotEmpty()) {
-            dateTime = Presenter.lists[position][position].dateTime
+        if (Presenter.forecasts[position].isNotEmpty()) {
+            dateTime = Presenter.forecasts[position][position].dateTime
         }
 
         /*if (position == 0) {
@@ -49,10 +48,10 @@ class CustomAdapter(var dataSet: ForecastList) : RecyclerView.Adapter<CustomAdap
         }*/
         holder.tvDay.text = dateTime.substring(0, dateTime.indexOf(" "))
 
-        for (i in 0 until Presenter.lists[position].size) {
-            holder.timeTextViews[i].text = formatTime(Presenter.lists[position][i].dateTime)
-            holder.tempTextViews[i].text = formatTemperature(Presenter.lists[position][i].main.temp)
-            val img = Presenter.lists[position][i].weather[0].icon
+        for (i in 0 until Presenter.forecasts[position].size) {
+            holder.timeTextViews[i].text = formatTime(Presenter.forecasts[position][i].dateTime)
+            holder.tempTextViews[i].text = formatTemperature(Presenter.forecasts[position][i].main.temp)
+            val img = Presenter.forecasts[position][i].weather[0].icon
             Picasso.get().load(IMAGE_URL + img + IMAGE_PATH).into(holder.imageViews[i])
         }
 

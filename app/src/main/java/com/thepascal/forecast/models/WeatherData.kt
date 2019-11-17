@@ -16,14 +16,14 @@ data class Forecast(
     var temps: MutableList<Double> = mutableListOf()
 )
 
-data class ForecastList(
+data class ForecastsData(
     @SerializedName("cnt")
     val count: Int = 0,
-    val list: MutableList<com.thepascal.forecast.models.List> = mutableListOf(),
+    val list: MutableList<Forecasts> = mutableListOf(),
     val city: City = City()
 )
 
-data class List(
+data class Forecasts(
     @SerializedName("dt")
     val date: Int,
     val main: Main,

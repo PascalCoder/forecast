@@ -15,13 +15,11 @@ import com.thepascal.forecast.Constants.UPDATE_REQUEST
 import com.thepascal.forecast.Constants.ZIP_CODE_REPLY
 import com.thepascal.forecast.R
 import com.thepascal.forecast.formatTemperature
-import com.thepascal.forecast.models.ForecastList
-import com.thepascal.forecast.models.List
+import com.thepascal.forecast.models.ForecastsData
 import com.thepascal.forecast.presenter.CustomAdapter
 import com.thepascal.forecast.presenter.Presenter
 import com.thepascal.forecast.presenter.PresenterContract
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), ViewContract {
 
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity(), ViewContract {
         }
     }
 
-    override fun addForecast(dataSet: ForecastList) {
+    override fun addForecast(dataSet: ForecastsData) {
         homeErrorMessage.visibility = View.GONE
         homeRecyclerView.visibility = View.VISIBLE
         homeRecyclerView.adapter = CustomAdapter(dataSet)
@@ -95,7 +93,7 @@ class MainActivity : AppCompatActivity(), ViewContract {
                 if(zipCode != null && units != null){
                     presenter.getForecasts(zipCode, units)
 
-                    if(Presenter.lists[0].isEmpty()){
+                    if(Presenter.forecasts[0].isEmpty()){
                         this.onError("No data found for the provided zipcode")
                     }
                 }
