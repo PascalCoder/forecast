@@ -92,10 +92,6 @@ class MainActivity : AppCompatActivity(), ViewContract {
                 presenter.initializeRetrofit()
                 if(zipCode != null && units != null){
                     presenter.getForecasts(zipCode, units)
-
-                    if(Presenter.forecasts[0].isEmpty()){
-                        this.onError("No data found for the provided zipcode")
-                    }
                 }
 
             }
