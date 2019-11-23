@@ -50,16 +50,22 @@ class MainActivity : AppCompatActivity(), ViewContract {
     }
 
     override fun addForecast(dataSet: ForecastsData) {
-        homeErrorMessage.visibility = View.GONE
-        homeRecyclerView.visibility = View.VISIBLE
         homeRecyclerView.adapter = CustomAdapter(dataSet)
 
         Log.d(tag, "onCreate: $DEFAULT_ZIP_CODE $DEFAULT_SYSTEM City: ${Presenter.city} Temp: ${Presenter.temp}")
 
-        homeCityText.text = Presenter.city
-        val temp: Double = (Presenter.temp).toDouble()
-        homeTemp.text = formatTemperature(temp)
-        homeCondition.text = Presenter.condition
+        if (dataSet.list.size > 0) {
+            val temp = (dataSet.list[0].main.temp)
+            homeTemp.text = formatTemperature(temp)
+            homeCityText.text = dataSet.city.name
+            homeCondition.text = Presenter.condition
+        } else {
+            homeTemp.text = ""
+            homeCityText.text = ""
+            homeCondition.text = getString(R.string.no_data_text)
+        }
+
+
 
         if ((Presenter.temp).toDouble() < 60) {
             homeToolbar.setBackgroundColor(resources.getColor(R.color.colorSkyBlue))
@@ -71,8 +77,6 @@ class MainActivity : AppCompatActivity(), ViewContract {
     override fun onError(errorMessage: String) {
         Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
         homeRecyclerView.visibility = View.GONE
-        homeErrorMessage.visibility = View.VISIBLE
-        homeErrorMessage.text = errorMessage
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,7 +94,7 @@ class MainActivity : AppCompatActivity(), ViewContract {
 
                 presenter.bindView(this)
                 presenter.initializeRetrofit()
-                if(zipCode != null && units != null){
+                if (zipCode != null && units != null) {
                     presenter.getForecasts(zipCode, units)
                 }
 
@@ -98,7 +102,7 @@ class MainActivity : AppCompatActivity(), ViewContract {
         }
     }
 
-    private fun updateDetails(){
+    private fun updateDetails() {
 
         val message = "Testing message"
         val intent = Intent(this, DetailsActivity::class.java)

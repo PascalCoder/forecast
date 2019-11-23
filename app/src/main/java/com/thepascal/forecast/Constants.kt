@@ -18,4 +18,7 @@ object Constants {
 
     const val ZIP_CODE_REPLY: String = "com.thepascal.forecast.view.zipcode.REPLY"
     const val UNITS_REPLY: String = "com.thepascal.forecast.view.units.REPLY"
+
+    const val VIEW_HOLDER_OK = 0
+    const val VIEW_HOLDER_ERROR = 1
 }

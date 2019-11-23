@@ -8,4 +8,9 @@
     <string name="today_text">Today</string>
     <string name="tomorrow_text">Tomorrow</string>
     <string name="temp_value">%1$d %2$s</string>
+    <string name="no_data_text">No Data</string>
+    <string name="no_data_error_msg">
+        No data found for the provided zip code.
+        Please click on the settings button and try another zip code.
+    </string>
 </resources>
