@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.thepascal.forecast.Constants.DEFAULT_SYSTEM
 import com.thepascal.forecast.Constants.METRIC_SYSTEM
 import com.thepascal.forecast.Constants.UNITS_REPLY
@@ -48,17 +47,19 @@ class DetailsActivity : AppCompatActivity() {
                 } else {
                     DEFAULT_SYSTEM
                 }
-                //zipCode = detailsZipCode.editText?.text.toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 system = DEFAULT_SYSTEM
-                //zipCode = detailsZipCode.editText?.text.toString()
             }
         })
 
         detailsBackArrow.setOnClickListener {
-            Toast.makeText(applicationContext, "Unit: $unit \n System: $system \n ZipCode: $zipCode", Toast.LENGTH_LONG).show()
+            //Toast.makeText(applicationContext, "Unit: $unit \n System: $system \n ZipCode: $zipCode", Toast.LENGTH_LONG).show()
+            onBackPressed()
+        }
+
+        detailsSubmitButton.setOnClickListener {
             onBackPressed()
         }
     }

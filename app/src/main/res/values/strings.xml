@@ -13,4 +13,5 @@
         No data found for the provided zip code.
         Please click on the settings button and try another zip code.
     </string>
+    <string name="get_forecast">Get Forecast</string>
 </resources>

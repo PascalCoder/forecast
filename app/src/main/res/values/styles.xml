@@ -8,4 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Widget.Forecast.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/colorWhite</item> <!-- ?android:attr/textColorPrimary -->
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:stateListAnimator" tools:ignore="NewApi">
+            @animator/shr_next_button_state_list_anim
+        </item>-->
+    </style>
+
 </resources>
