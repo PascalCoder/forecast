@@ -19,12 +19,12 @@
         <activity
             android:name=".view.DetailsActivity"
             android:label="Forecast"
-            android:parentActivityName=".view.MainActivity">
+            android:parentActivityName=".view.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MainActivity" />
+                android:value=".view.HomeActivity" />
         </activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

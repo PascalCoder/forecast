@@ -1,5 +1,10 @@
 package com.thepascal.forecast.view
 
+/**
+ * ic_launcher, ic_launcher_foreground and ic_launcher_round
+ * icons in res/mipmap made by Pascal Arvee from http://www.flaticon.com/
+ */
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,17 +24,17 @@ import com.thepascal.forecast.models.ForecastsData
 import com.thepascal.forecast.presenter.CustomAdapter
 import com.thepascal.forecast.presenter.Presenter
 import com.thepascal.forecast.presenter.PresenterContract
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 
-class MainActivity : AppCompatActivity(), ViewContract {
+class HomeActivity : AppCompatActivity(), ViewContract {
 
-    private val tag = MainActivity::class.java.simpleName
+    private val tag = HomeActivity::class.java.simpleName
 
     private lateinit var presenter: PresenterContract
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
 
         supportActionBar?.hide()
 
