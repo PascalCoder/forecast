@@ -2,7 +2,8 @@ package com.thepascal.forecast.view
 
 /**
  * ic_launcher, ic_launcher_foreground and ic_launcher_round
- * icons in res/mipmap made by Pascal Arvee from http://www.flaticon.com/
+ * icons in res/mipmap: <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from
+ * <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
  */
 
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thepascal.forecast.Constants.DEFAULT_SYSTEM
 import com.thepascal.forecast.Constants.DEFAULT_ZIP_CODE
@@ -73,9 +75,9 @@ class HomeActivity : AppCompatActivity(), ViewContract {
 
 
         if ((Presenter.temp).toDouble() < 60) {
-            homeToolbar.setBackgroundColor(resources.getColor(R.color.colorSkyBlue))
+            homeToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSkyBlue))
         } else {
-            homeToolbar.setBackgroundColor(resources.getColor(R.color.colorOrange))
+            homeToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorOrange))
         }
     }
 
